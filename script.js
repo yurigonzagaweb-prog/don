@@ -226,25 +226,25 @@ heroTL
     gsap.to(section, {
       scrollTrigger: {
         trigger: section,
-        start: 'top top',
+        start: 'bottom 40%',   /* só começa quando a seção está saindo */
         end:   'bottom top',
         scrub: 1,
       },
-      scale:   0.94,
-      opacity: 0.6,
-      filter:  'blur(4px)',
+      scale:   0.96,
+      opacity: 0.7,
+      filter:  'blur(2px)',
       transformOrigin: '50% 50%',
       ease: 'none',
     });
 
     /* Entering (section coming into view from below) */
     gsap.fromTo(section,
-      { scale: 0.96, opacity: 0.55, filter: 'blur(6px)', y: 40 },
+      { scale: 0.97, opacity: 0.6, filter: 'blur(3px)', y: 24 },
       {
         scrollTrigger: {
           trigger: section,
-          start: 'top 85%',
-          end:   'top 20%',
+          start: 'top 90%',
+          end:   'top 30%',
           scrub: 1.2,
         },
         scale:   1,
