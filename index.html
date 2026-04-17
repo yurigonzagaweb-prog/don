@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Imersão D.O.N — IA que Liberta Médicos</title>
+
+  <link rel="preload" as="image" href="herodesktop.png" media="(min-width: 769px)">
+  <link rel="preload" as="image" href="heromobile.png" media="(max-width: 768px)">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- Background layers -->
+  <canvas id="matrix-canvas"></canvas>
+  <canvas id="smoke-canvas"></canvas>
+  <div class="grid-overlay"></div>
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <!-- HUD -->
+  <div class="hud-corner hud-tl">SYS.MED.AI<br>VER.4.7.2<br><span id="hud-time">--:--:--</span></div>
+  <div class="hud-corner hud-tr">STATUS: ONLINE<br>PROTOCOL: SECURE<br>ENC: AES-256</div>
+  <div class="hud-corner hud-bl">IMERSÃO D.O.N<br>NODE: BRL-SAO-01</div>
+  <div class="hud-corner hud-br">SCROLL: <span id="hud-scroll">000</span>%<br>FRAME: <span id="hud-frame">60</span>FPS</div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">D<span>.</span>O<span>.</span>N</div>
+    <div class="nav-status"><div class="status-dot"></div>SISTEMA ATIVO</div>
+    <a href="#cta-final" class="nav-cta">Garantir Acesso</a>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════
+       SCENE 01 — HERO
+       Desktop: texto esquerda / imagem direita (fixa)
+       Mobile:  imagem topo (fixa) / texto abaixo
+  ══════════════════════════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-scan-line"></div>
+
+    <!--
+      MOBILE: imagem hero fixa no topo.
+      Ajuste a posição vertical com --mobile-img-offset (padrão: 0px).
+      Exemplo: style="--mobile-img-offset: -60px"  ← sobe a foto
+               style="--mobile-img-offset: 60px"   ← desce a foto
+      Ajuste o texto com --mobile-text-offset (padrão: 0px).
+      Exemplo: style="--mobile-text-offset: -40px" ← sobe o texto
+    -->
+    <div class="hero-mobile-img" id="hero-mobile-img">
+      <img src="heromobile2.png" alt="Imersão D.O.N" loading="eager"
+           style="object-position: center var(--mobile-img-offset, 0px);">
+      <div class="hero-mobile-overlay"></div>
+    </div>
+
+    <div class="hero-grid">
+
+      <!-- Esquerda: texto -->
+      <div class="hero-content" style="margin-top: var(--mobile-text-offset, 0px);">
+        <div class="hero-tag" id="hero-tag">IMERSÃO D.O.N — SISTEMA ATIVO</div>
+
+        <h1 class="hero-headline" id="hero-headline">
+          <span class="line-1">IA NÃO TE</span>
+          <span class="line-2">SUBSTITUI.</span>
+          <span class="line-3">TE LIBERTA.</span>
+        </h1>
+
+        <p class="hero-sub" id="hero-sub">
+          O teto da sua carreira não é o número de pacientes.<br>
+          É o tempo que você desperdiça em
+          <strong>tarefas que uma máquina pode fazer.</strong>
+        </p>
+
+        <div class="ecg-container" id="hero-ecg">
+          <svg class="ecg-svg" viewBox="0 0 280 50">
+            <path class="ecg-path ecg-path-loop"
+              d="M0,25 L20,25 L25,25 L30,5 L35,45 L40,20 L45,25
+                 L65,25 L70,25 L75,5 L80,45 L85,20 L90,25
+                 L110,25 L115,25 L120,5 L125,45 L130,20 L135,25
+                 L155,25 L160,25 L165,5 L170,45 L175,20 L180,25
+                 L200,25 L205,25 L210,5 L215,45 L220,20 L225,25 L280,25"/>
+          </svg>
+        </div>
+
+        <div class="hero-cta-group" id="hero-cta">
+          <a href="#cta-final" class="btn-primary">Entrar na Imersão →</a>
+          <a href="#modules" class="btn-secondary">Ver o Programa</a>
+        </div>
+      </div>
+
+      <!-- Direita: imagem desktop (fixa, sem parallax) -->
+      <div class="hero-image-wrap" id="hero-image-wrap">
+        <img src="Herodesktop2.png" alt="Imersão D.O.N" loading="eager">
+        <div class="hero-img-edge"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DIVIDER 01 -->
+  <div class="scene-divider">
+    <div class="divider-rail"></div>
+    <div class="divider-badge"><span class="divider-hex">⬡</span><span class="divider-label">// MANIFESTO — 01</span><span class="divider-hex">⬡</span></div>
+    <div class="divider-rail"></div>
+  </div>
+
+  <!-- SCENE 02 — MANIFESTO -->
+  <section id="manifesto">
+    <div class="manifesto-inner">
+      <h2 class="manifesto-text">
+        <span class="manifesto-line"><span>Você estudou anos</span></span>
+        <span class="manifesto-line accent"><span>para salvar vidas.</span></span>
+        <span class="manifesto-line dim"><span>Não para responder</span></span>
+        <span class="manifesto-line dim"><span>e-mail às 23h.</span></span>
+      </h2>
+      <div class="manifesto-divider"></div>
+      <h2 class="manifesto-text">
+        <span class="manifesto-line"><span>Este não é um curso</span></span>
+        <span class="manifesto-line"><span>de tecnologia.</span></span>
+        <span class="manifesto-line accent-2"><span>É um sistema</span></span>
+        <span class="manifesto-line accent-2"><span>de libertação.</span></span>
+      </h2>
+    </div>
+  </section>
+
+  <!-- DIVIDER 02 -->
+  <div class="scene-divider divider-orange">
+    <div class="divider-rail"></div>
+    <div class="divider-badge"><span class="divider-hex">⬡</span><span class="divider-label">// DIAGNÓSTICO — 02</span><span class="divider-hex">⬡</span></div>
+    <div class="divider-rail"></div>
+  </div>
+
+  <!-- SCENE 03 — PAIN POINTS -->
+  <section id="pain">
+    <div class="pain-inner">
+      <div class="pain-header fade-up">
+        <h2 class="pain-headline">Reconhece algum destes <em>sintomas?</em></h2>
+      </div>
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="pain-number">// 001</div>
+          <span class="pain-icon" style="color:var(--orange)">⏱</span>
+          <h3 class="pain-title">Tempo Sequestrado</h3>
+          <p class="pain-desc">Horas do seu dia destruídas por burocracia médica, laudos repetitivos e tarefas administrativas que não exigem a sua expertise.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-number">// 002</div>
+          <span class="pain-icon" style="color:var(--green)">📊</span>
+          <h3 class="pain-title">Escala Limitada</h3>
+          <p class="pain-desc">Você não consegue atender mais pacientes sem trabalhar mais horas. O modelo atual é fisicamente insustentável.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-number">// 003</div>
+          <span class="pain-icon" style="color:#4A9EFF">🧠</span>
+          <h3 class="pain-title">Burnout Silencioso</h3>
+          <p class="pain-desc">A exaustão não vem de tratar pacientes. Vem do peso invisível de tudo que não é medicina — e que ninguém te ensinou a resolver.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-number">// 004</div>
+          <span class="pain-icon" style="color:var(--orange)">💰</span>
+          <h3 class="pain-title">Receita Estagnada</h3>
+          <p class="pain-desc">Sua renda está presa ao número de horas que você trabalha. Sem alavancagem, o teto financeiro é biológico.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIVIDER 03 -->
+  <div class="scene-divider">
+    <div class="divider-rail"></div>
+    <div class="divider-badge"><span class="divider-hex">⬡</span><span class="divider-label">// A SOLUÇÃO — 03</span><span class="divider-hex">⬡</span></div>
+    <div class="divider-rail"></div>
+  </div>
+
+  <!-- SCENE 04 — SOLUTION -->
+  <section id="solution">
+    <div class="sol-header">
+      <div class="sol-eyebrow">▸ FRAMEWORK D.O.N</div>
+      <h2 class="sol-headline">
+        IA não te substitui.<br>
+        <span class="sol-accent">Te dá superpoderes.</span>
+      </h2>
+      <p class="sol-sub">
+        Enquanto você cuida de pacientes, a IA cuida do resto.
+        Burocracia, laudos, agendamentos, follow-ups —
+        tudo operando sem você precisar tocar.
+      </p>
+    </div>
+
+    <div class="sol-panels">
+      <div class="sol-panel sol-panel--before">
+        <div class="sol-panel-tag">// SEM D.O.N</div>
+        <div class="sol-panel-title">Sua rotina hoje</div>
+        <ul class="sol-list sol-list--bad">
+          <li><span class="sol-bullet">✗</span> 4h/dia em burocracia</li>
+          <li><span class="sol-bullet">✗</span> Laudos escritos manualmente</li>
+          <li><span class="sol-bullet">✗</span> Agenda gerenciada por você</li>
+          <li><span class="sol-bullet">✗</span> Follow-up esquecido</li>
+          <li><span class="sol-bullet">✗</span> Sem tempo para crescer</li>
+          <li><span class="sol-bullet">✗</span> Renda limitada por horas</li>
+        </ul>
+        <div class="sol-panel-meter">
+          <div class="sol-meter-label">Eficiência operacional</div>
+          <div class="sol-meter-track"><div class="sol-meter-fill sol-meter-fill--bad" data-width="23"></div></div>
+          <div class="sol-meter-value" data-target="23" data-suffix="%">0%</div>
+        </div>
+      </div>
+
+      <div class="sol-panel-arrow">
+        <div class="sol-arrow-line"></div>
+        <div class="sol-arrow-label">IMERSÃO<br>D.O.N</div>
+        <div class="sol-arrow-line"></div>
+      </div>
+
+      <div class="sol-panel sol-panel--after">
+        <div class="sol-panel-tag sol-panel-tag--green">// COM D.O.N</div>
+        <div class="sol-panel-title">Sua rotina transformada</div>
+        <ul class="sol-list sol-list--good">
+          <li><span class="sol-bullet sol-bullet--good">✓</span> IA assume toda a burocracia</li>
+          <li><span class="sol-bullet sol-bullet--good">✓</span> Laudos gerados em segundos</li>
+          <li><span class="sol-bullet sol-bullet--good">✓</span> Agenda 100% automatizada</li>
+          <li><span class="sol-bullet sol-bullet--good">✓</span> Follow-up automático e preciso</li>
+          <li><span class="sol-bullet sol-bullet--good">✓</span> +4h/dia para o que importa</li>
+          <li><span class="sol-bullet sol-bullet--good">✓</span> Receita escala sem limite</li>
+        </ul>
+        <div class="sol-panel-meter">
+          <div class="sol-meter-label">Eficiência operacional</div>
+          <div class="sol-meter-track"><div class="sol-meter-fill sol-meter-fill--good" data-width="91"></div></div>
+          <div class="sol-meter-value sol-meter-value--green" data-target="91" data-suffix="%">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sol-stats">
+      <div class="sol-stat">
+        <div class="sol-stat-num" data-target="80" data-suffix="%">0%</div>
+        <div class="sol-stat-label">das tarefas admin<br>automatizadas</div>
+      </div>
+      <div class="sol-stat-divider"></div>
+      <div class="sol-stat">
+        <div class="sol-stat-num" data-target="4" data-suffix="h">0h</div>
+        <div class="sol-stat-label">recuperadas<br>por dia</div>
+      </div>
+      <div class="sol-stat-divider"></div>
+      <div class="sol-stat">
+        <div class="sol-stat-num" data-target="240" data-suffix="%">0%</div>
+        <div class="sol-stat-label">de aumento na<br>capacidade de receita</div>
+      </div>
+    </div>
+
+    <div class="sol-cta-wrap">
+      <a href="#cta-final" class="btn-primary">Quero esse sistema →</a>
+    </div>
+  </section>
+
+  <!-- DIVIDER 04 -->
+  <div class="scene-divider divider-orange">
+    <div class="divider-rail"></div>
+    <div class="divider-badge"><span class="divider-hex">⬡</span><span class="divider-label">// PROGRAMA — 04</span><span class="divider-hex">⬡</span></div>
+    <div class="divider-rail"></div>
+  </div>
+
+  <!-- SCENE 05 — MODULES -->
+  <section id="modules">
+    <div class="modules-inner">
+      <div class="modules-header">
+        <h2 class="modules-headline">O que você<br><span class="accent">domina</span><br>na imersão.</h2>
+        <p class="modules-desc">Seis módulos de transformação prática. Não teoria. Não promessa. Sistemas reais que funcionam na rotina médica real.</p>
+      </div>
+      <div class="modules-list">
+        <div class="module-item"><div class="module-num">01</div><div class="module-content"><h3 class="module-title">Fundamentos da IA Médica</h3><p class="module-desc-text">Como a IA realmente funciona — e como ela serve ao médico, não o contrário.</p></div><span class="module-tag">FOUNDATION</span></div>
+        <div class="module-item"><div class="module-num">02</div><div class="module-content"><h3 class="module-title">Automação de Laudos e Prontuários</h3><p class="module-desc-text">Sistemas para gerar documentos clínicos em segundos, com qualidade padronizada.</p></div><span class="module-tag">AUTOMATION</span></div>
+        <div class="module-item"><div class="module-num">03</div><div class="module-content"><h3 class="module-title">Comunicação Inteligente com Pacientes</h3><p class="module-desc-text">IA gerenciando agendamentos, follow-ups e dúvidas. Você interfere só quando importa.</p></div><span class="module-tag">SCALE</span></div>
+        <div class="module-item"><div class="module-num">04</div><div class="module-content"><h3 class="module-title">Diagnóstico Aumentado</h3><p class="module-desc-text">Use IA para processar dados clínicos mais rápido e com menos margem de erro.</p></div><span class="module-tag">CLINICAL</span></div>
+        <div class="module-item"><div class="module-num">05</div><div class="module-content"><h3 class="module-title">Gestão e Receita com IA</h3><p class="module-desc-text">Transforme sua prática em negócio escalável sem perder a essência da medicina.</p></div><span class="module-tag">BUSINESS</span></div>
+        <div class="module-item"><div class="module-num">06</div><div class="module-content"><h3 class="module-title">Implementação em 30 Dias</h3><p class="module-desc-text">Plano de ação personalizado. Sai da imersão com sistemas rodando, não com ideias.</p></div><span class="module-tag">DEPLOY</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIVIDER 05 -->
+  <div class="scene-divider">
+    <div class="divider-rail"></div>
+    <div class="divider-badge"><span class="divider-hex">⬡</span><span class="divider-label">// INSTRUTOR — 05</span><span class="divider-hex">⬡</span></div>
+    <div class="divider-rail"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SCENE 06 — INSTRUCTOR
+       Para usar foto: substitua o emoji pelo <img>
+       Exemplo:
+         <img src="foto-don.jpg" alt="Dr. DON" class="instructor-photo">
+       O emoji abaixo é o fallback enquanto não tiver foto.
+  ══════════════════════════════════════════════════════ -->
+  <section id="instructor">
+    <div class="instructor-inner">
+
+      <div class="instructor-avatar fade-up">
+        <!--
+          ── FOTO DO INSTRUTOR ──────────────────────────────
+          Coloque a foto do Dr. DON aqui.
+          Substitua este bloco inteiro pelo <img> abaixo:
+
+          <img src="foto-don.jpg" alt="Dr. DON" class="instructor-photo">
+
+          A foto deve ser quadrada ou retrato. O CSS cuida do crop circular.
+          ────────────────────────────────────────────────────
+        -->
+        <span class="instructor-emoji">👨‍⚕️</span>
+      </div>
+
+      <div class="fade-up">
+        <div class="instructor-role">▸ MÉDICO + ARQUITETO DE SISTEMAS IA</div>
+        <h2 class="instructor-name">Dr. DON</h2>
+        <p class="instructor-bio">
+          <strong>Médico que parou de ser escravo da própria clínica.</strong><br><br>
+          Construiu um sistema de IA que opera mais de 80% das tarefas administrativas
+          da sua prática — sem terceirizar, sem magia.<br><br>
+          Hoje, trabalha menos horas, atende com mais qualidade e
+          ensina outros médicos a fazerem o mesmo.
+        </p>
+        <div class="instructor-stats">
+          <div class="stat-item"><span class="stat-value">+800</span><span class="stat-label">Médicos Formados</span></div>
+          <div class="stat-item"><span class="stat-value">80%</span><span class="stat-label">Admin Automatizado</span></div>
+          <div class="stat-item"><span class="stat-value">4h</span><span class="stat-label">Recuperadas/Dia</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DIVIDER 06 -->
+  <div class="scene-divider divider-orange">
+    <div class="divider-rail"></div>
+    <div class="divider-badge"><span class="divider-hex">⬡</span><span class="divider-label">// DECISÃO FINAL — 06</span><span class="divider-hex">⬡</span></div>
+    <div class="divider-rail"></div>
+  </div>
+
+  <!-- SCENE 07 — CTA FINAL -->
+  <section id="cta-final">
+    <div class="cta-glow"></div>
+    <div class="cta-eyebrow">▸ ACESSO — DECISÃO FINAL</div>
+    <h2 class="cta-headline">
+      <span class="line-white">Seu próximo passo</span>
+      <span class="line-green">começa agora.</span>
+    </h2>
+    <p class="cta-sub">
+      Uma única decisão. Um investimento menor que um jantar.
+      Um sistema que transforma como você pratica medicina.
+    </p>
+    <div class="cta-price-block">
+      <span class="cta-price-label">▸ Investimento único</span>
+      <div class="cta-price-big"><sup>R$</sup>147</div>
+      <span class="cta-guarantee">✓ GARANTIA DE 7 DIAS — RISCO ZERO</span>
+    </div>
+    <div class="cta-btn-wrap">
+      <a href="#" class="btn-cta-final">GARANTIR MINHA VAGA AGORA →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">D<span>.</span>O<span>.</span>N</div>
+    <div class="footer-info">IMERSÃO D.O.N © 2025<br>MÉDICO + IA = LIBERDADE</div>
+    <div class="footer-legal">Todos os direitos reservados.<br>Resultados podem variar.</div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
